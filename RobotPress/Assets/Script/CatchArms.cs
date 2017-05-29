@@ -1,0 +1,60 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class CatchArms : MonoBehaviour {
+	// キャッチオブジェクトの保持
+	private List<CharacterStatus> catchObj = new List<CharacterStatus>();
+	//private CharacterStatus[] catchObj;
+	//  子オブジェクトのアームを保持
+	private RobotCatchArms[] roboCArms =  new RobotCatchArms[2];
+	// マウス移動の制御
+	private bool mouseMove = false;
+	// マウス座標
+	private Vector3 mousePos;
+	// ワールド座標
+	private Vector3 worldPos;
+	// Use this for initialization
+	void Start () {
+		roboCArms = GetComponentsInChildren<RobotCatchArms> ();
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		if (!mouseMove) {
+			if (!roboCArms [0].movement && !roboCArms [1].movement) {
+				mouseMove = true;
+			}
+		} else {
+			// マウス座標の取得
+			mousePos = Input.mousePosition;
+			mousePos.z = 10;
+			// ワールド座標に変換
+			worldPos = Camera.main.ScreenToWorldPoint (mousePos);
+			transform.position = worldPos;
+		}
+		// マウスが離されたら
+		if (Input.GetMouseButtonUp (0)) {
+			// ビルショット攻撃
+			if (catchObj.Count > 0) {
+				while(true){
+					catchObj [catchObj.Count - 1].ActivateShot ();
+					catchObj.Remove (catchObj [catchObj.Count - 1]);
+					if (catchObj.Count <= 0)break;
+				}
+			}
+			// 子オブジェクトを削除する
+			for (int i = 0; i < 2; i++) {
+				roboCArms [i].CallDestroy ();
+			}
+			transform.DetachChildren ();
+			Destroy (this.gameObject);
+		}
+	}
+	// 親子関係の設定
+	public void ParentSetting(GameObject obj){
+		// 掴んだオブジェクトを保持
+		catchObj.Add(obj.GetComponent<CharacterStatus>());
+		obj.transform.parent = transform;
+	}
+}
