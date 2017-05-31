@@ -13,6 +13,8 @@ public class Enemy : CharacterStatus {
 	// 遅延時間
 	private float delayTime = 0.5f;
 
+	private bool isTargetting = false;
+
 	// Use this for initialization
 	void Start () {
 		// Super
@@ -22,7 +24,7 @@ public class Enemy : CharacterStatus {
 
 		activAction = Spawn;
 		angle = Random.Range (225, 315);
-		Destroy (gameObject, 8);
+		//Destroy (gameObject, 8);
 	}
 	
 	// Update is called once per frame
@@ -50,16 +52,20 @@ public class Enemy : CharacterStatus {
 	// 死亡処理
 	protected override void DeadAction ()
 	{
-		Destroy (this.gameObject);
+		base.DeadAction ();
 	}
 	// 通常行動
 	private void MoveAction(){
 		// 移動
-		transform.position += new Vector3 (
-			Mathf.Sin ((transform.localEulerAngles.y + angle) * 3.14f / 180) * base.speed,
-			Mathf.Cos ((transform.localEulerAngles.y + angle) * 3.14f / 180) * base.speed,
-			0
-		);
+		if (isTargetting) {
+			
+		} else {
+			transform.position += new Vector3 (
+				Mathf.Sin ((transform.localEulerAngles.y + angle) * 3.14f / 180) * base.speed,
+				Mathf.Cos ((transform.localEulerAngles.y + angle) * 3.14f / 180) * base.speed,
+				0
+			);
+		}
 	}
 	// スポーン時の行動
 	private void SpawnAction(){

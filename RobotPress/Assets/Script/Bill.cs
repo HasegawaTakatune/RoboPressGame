@@ -8,7 +8,6 @@ public class Bill : CharacterStatus {
 
 	// Use this for initialization
 	void Start () {
-		status = Idol;
 	}
 
 	protected override void Update ()
@@ -22,9 +21,13 @@ public class Bill : CharacterStatus {
 	// 行動処理
 	protected override void ActiveAction ()
 	{
+		transform.position += new Vector3 (
+			Mathf.Sin ((transform.localEulerAngles.y + 270) * 3.14f / 180) * 0.01f,
+			0, 0);
 	}
 	// 死亡処理
 	protected override void DeadAction ()
 	{
+		base.DeadAction ();
 	}
 }

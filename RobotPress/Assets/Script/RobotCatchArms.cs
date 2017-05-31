@@ -40,7 +40,7 @@ public class RobotCatchArms : MonoBehaviour {
 	}
 	// 当たり判定
 	void OnTriggerEnter2D(Collider2D other){
-		if (other.gameObject.tag == "Bill") {
+		if (other.gameObject.tag == "Bill" || other.gameObject.tag == "Enemy") {
 			movement = false;
 			// 当たった対象を子関係にする
 			parentObj.GetComponent<CatchArms> ().ParentSetting (other.gameObject);

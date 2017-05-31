@@ -41,6 +41,10 @@ public class CharacterStatus : MonoBehaviour {
 	}
 	// 死亡時処理
 	protected virtual void DeadAction(){
+		Destroy (this.gameObject);
+	}
+	protected virtual void DeadAction(float waitTime){
+		Destroy (this.gameObject, waitTime);
 	}
 
 	// ダメージを受ける
@@ -51,7 +55,8 @@ public class CharacterStatus : MonoBehaviour {
 			status = Dead;
 		}
 	}
-
+	// ステータスのセット
+	public void ToIdol(){status = Idol;}
 	// ショット！！
 	public void ActivateShot(){ status = Shot; Destroy(gameObject,5.0f);}
 	protected void ShotAction(){
@@ -63,7 +68,7 @@ public class CharacterStatus : MonoBehaviour {
 	}
 	// 当たり判定
 	private void OnTriggerEnter2D(Collider2D other){
-		if (status == Shot && other.gameObject.tag == "Enemy") {
+		if (status == Shot && other.gameObject.tag == "Enemy" || other.gameObject.tag == "MotherShip") {
 			other.gameObject.GetComponent<CharacterStatus> ().ReceiveDamage (damage);
 		}
 	}

@@ -53,8 +53,10 @@ public class CatchArms : MonoBehaviour {
 	}
 	// 親子関係の設定
 	public void ParentSetting(GameObject obj){
+		CharacterStatus chas = obj.GetComponent<CharacterStatus> ();
+		chas.ToIdol();
 		// 掴んだオブジェクトを保持
-		catchObj.Add(obj.GetComponent<CharacterStatus>());
+		catchObj.Add(chas);
 		obj.transform.parent = transform;
 	}
 }
