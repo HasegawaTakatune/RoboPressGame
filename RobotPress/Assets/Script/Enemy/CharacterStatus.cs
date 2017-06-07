@@ -56,9 +56,10 @@ public class CharacterStatus : MonoBehaviour {
 		vitality -= dmg;
 		// 体力がなくなったら
 		if (vitality <= 0) {
-			status = Dead;
 			GameStatus.AddScore (score);
+			GameStatus.AddNumberDestroyed ();
 			GameUI.SetScore ();
+			status = Dead;
 		}
 	}
 	// ステータスのセット

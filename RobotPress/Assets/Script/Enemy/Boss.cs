@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Boss : CharacterStatus {
 
 	[SerializeField]private GameObject spawnObj;
+	[SerializeField]private GM gm;
 	private float delayTime = 2.5f;
 	private bool usedSpawn = false;
 	private bool DoOnce = false;
@@ -60,5 +62,11 @@ public class Boss : CharacterStatus {
 			Instantiate (spawnObj, transform.position, Quaternion.identity);
 			i++;
 		}
+	}
+
+	protected override void DeadAction ()
+	{
+		gm.ToTheResult ();
+		base.DeadAction ();
 	}
 }
