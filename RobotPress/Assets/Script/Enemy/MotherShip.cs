@@ -18,6 +18,7 @@ public class MotherShip : CharacterStatus {
 		status = Active;
 		speed = 0.03f;
 		vitality = 30;
+		score = 50;
 		// スポナー取得
 		spawner = GetComponentInChildren<Spawner> ();
 		// 移動量初期化

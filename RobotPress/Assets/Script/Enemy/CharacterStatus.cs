@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterStatus : MonoBehaviour {
+	//
+	[SerializeField] private bool ZAKO = true;
 	// ステータス
 	protected const byte Idol = 0,Active = 1,Dead = 2,Shot = 3;
 	protected byte status = Active;
@@ -14,6 +16,8 @@ public class CharacterStatus : MonoBehaviour {
 	protected int vitality;
 	// ダメージ
 	protected int damage = 10;
+	// 
+	protected int score;
 
 	protected virtual void Update(){
 		switch (status) {
@@ -53,6 +57,8 @@ public class CharacterStatus : MonoBehaviour {
 		// 体力がなくなったら
 		if (vitality <= 0) {
 			status = Dead;
+			GameStatus.AddScore (score);
+			GameUI.SetScore ();
 		}
 	}
 	// ステータスのセット

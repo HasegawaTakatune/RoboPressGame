@@ -11,7 +11,7 @@ public class Enemy : CharacterStatus {
 	// 移動角度
 	[SerializeField]private float angle;
 	// 遅延時間
-	private float delayTime = 0.5f;
+	private float delayTime;
 
 	private bool isTargetting = false;
 
@@ -21,10 +21,12 @@ public class Enemy : CharacterStatus {
 		status = Active;
 		speed = 0.05f;
 		vitality = 10;
+		score = 10;
 
 		activAction = Spawn;
 		angle = Random.Range (225, 315);
-		//Destroy (gameObject, 8);
+
+		Destroy (gameObject, 20);
 	}
 	
 	// Update is called once per frame
@@ -74,6 +76,7 @@ public class Enemy : CharacterStatus {
 			Mathf.Cos ((transform.localEulerAngles.y + angle) * 3.14f / 180) * base.speed,
 			0
 		);
+		delayTime = Random.Range (0.5f, 6);
 		StartCoroutine (myFunc.Delay (delayTime, () => {
 			activAction = Move;
 			angle = 270;

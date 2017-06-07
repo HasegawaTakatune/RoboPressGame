@@ -102,6 +102,7 @@ public class RobotArm : MonoBehaviour {
 			GetComponent<BoxCollider2D> ().enabled = false;
 			RoboStat.status = RoboStat.Delete;
 		} else if (other.gameObject.tag == "Enemy") {
+			other.gameObject.GetComponent<CharacterStatus> ().ToIdol ();
 			hitObj.Add (other.gameObject);
 		} else if (other.gameObject.tag == "MotherShip") {
 			other.gameObject.GetComponent<CharacterStatus> ().ReceiveDamage (10);
