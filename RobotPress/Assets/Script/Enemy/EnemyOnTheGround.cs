@@ -6,6 +6,7 @@ public class EnemyOnTheGround : CharacterStatus {
 
 	// Use this for initialization
 	void Start () {
+		score = 10;
 		Destroy (gameObject, 20);
 	}
 	
