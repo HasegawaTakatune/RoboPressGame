@@ -37,7 +37,7 @@ public class Touch : MonoBehaviour {
 		// 左長押ししたら
 		if(Input.GetMouseButton(0) && robotArms.Count < 2){
 			pressTime += Time.deltaTime;
-			if (pressTime > 1.0f && !press) {
+			if (pressTime > 0.3f && !press) {
 				ClickSpawn (CatchArm);
 				press = true;
 			}

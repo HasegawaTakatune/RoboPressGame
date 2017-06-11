@@ -5,11 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class GameStatus : MonoBehaviour {
 
-	private static int score = 10;
+	private static int score = 0;
 	public static int GetScore(){return score;}
 	public static void AddScore(int input){score += input;}
 
-	private static int NumberDestroyed = 10;
+	private static int NumberDestroyed = 0;
 	public static int GetNumberDestroyed(){return NumberDestroyed;}
 	public static void AddNumberDestroyed(){NumberDestroyed++;}
 
