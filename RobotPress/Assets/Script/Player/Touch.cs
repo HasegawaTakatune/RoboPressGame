@@ -54,21 +54,30 @@ public class Touch : MonoBehaviour {
 		if (robotArms.Count > 1) {
 			robotArms [0].SetTargetPosition (robotArms [1].GetPosition ());
 			robotArms [1].SetTargetPosition (robotArms [0].GetPosition ());
-
 			// ステータス変更
-			if (RoboStat.status == RoboStat.Idol) {
+			switch (RoboStat.status) {
+			case RoboStat.Idol:
 				// 方向修正
 				RoboStat.status = RoboStat.Targetting;
-			} else if (RoboStat.status == RoboStat.Targetting && press) {
-				// つかむ
-				StartCoroutine (Delay (0.1f, () => {
-					RoboStat.status = RoboStat.Catch;
-				}));
-			}else if (RoboStat.status == RoboStat.Targetting) {
-				// 移動
-				StartCoroutine (Delay (0.1f, () => {
-					RoboStat.status = RoboStat.Attack;
-				}));
+				break;
+			case RoboStat.Targetting:
+				if (press) {
+					// つかむ
+					StartCoroutine (Delay (0.1f, () => {
+						RoboStat.status = RoboStat.Catch;
+					}));
+				} else {
+					// 移動
+					StartCoroutine (Delay (0.1f, () => {
+						RoboStat.status = RoboStat.Attack;
+					}));
+				}
+				break;
+			case RoboStat.MoveToTarget:
+				if(robotArms[0].onTarget&&robotArms[1].onTarget){
+					RoboStat.status = RoboStat.Targetting;
+				}
+				break;
 			}
 		}
 	}
@@ -97,9 +106,11 @@ public class Touch : MonoBehaviour {
 		// スポーン
 		switch(spawnArmNumber){
 		case NormalArm:
+			RoboStat.status = RoboStat.MoveToTarget;
 			// リストに追加
-			robotArms.Add (Instantiate (spawnArm, worldPos, Quaternion.identity).gameObject.GetComponent<RobotArm> ());
+			robotArms.Add (Instantiate (spawnArm, new Vector3(10,10,0), Quaternion.identity).gameObject.GetComponent<RobotArm> ());
 			robotArms [robotArms.Count - 1].SetPosition (worldPos);
+			robotArms [robotArms.Count - 1].targetPos = worldPos;
 			break;
 		case CatchArm:
 			Instantiate (catchArms, worldPos, Quaternion.identity);

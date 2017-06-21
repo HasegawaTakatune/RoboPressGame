@@ -26,7 +26,7 @@ public class Enemy : CharacterStatus {
 		activAction = Spawn;
 		angle = Random.Range (225, 315);
 
-		Destroy (gameObject, 20);
+		//Destroy (gameObject, 20);
 	}
 	
 	// Update is called once per frame

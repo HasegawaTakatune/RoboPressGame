@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GameStatus : MonoBehaviour {
 
-	private static int score = 0;
+	private static int score = 5000;
 	public static int GetScore(){return score;}
 	public static void AddScore(int input){score += input;}
 

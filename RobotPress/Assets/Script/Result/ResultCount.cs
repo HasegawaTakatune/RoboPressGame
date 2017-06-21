@@ -32,10 +32,13 @@ public class ResultCount : MonoBehaviour {
 		while (true) {
 			yield return new WaitForSeconds (0.001f);
 			if (isScoreCount) {
-				count++;
+				if (count / 100 <= score / 100)	count += 100;
+				else count += 10;
 				ScoreText.text = "Score " + count.ToString ();
-				if (count >= score)isScoreCount = false;
-			}
+				if (count >= score)
+					isScoreCount = false;
+			} else
+				break;
 		}
 	}
 
@@ -44,10 +47,13 @@ public class ResultCount : MonoBehaviour {
 			yield return new WaitForSeconds (0.01f);
 			if (isDestroyedCount) {
 				destroyCount++;
-				if((destroyCount%10) == 0) dropTime -= 0.01f;
+				if ((destroyCount % 10) == 0)
+					dropTime -= 0.01f;
 				Instantiate (obj [0], new Vector3 (Random.Range (-3.0f, 3.0f), 0, 0), Quaternion.identity);
-				if (destroyCount >= NumDestroyed)isDestroyedCount = false;
-			}
+				if (destroyCount >= NumDestroyed)
+					isDestroyedCount = false;
+			} else
+				break;
 		}
 	}
 }

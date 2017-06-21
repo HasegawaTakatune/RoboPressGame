@@ -36,12 +36,16 @@ public class RobotCatchArms : MonoBehaviour {
 	private void MoveAction(){
 		if (movement) {
 			transform.position += new Vector3 (Mathf.Sin (angle.x) * speed, Mathf.Cos (angle.x) * speed, 0);
+			if (Mathf.Abs (otherArms.transform.position.y - transform.position.y) <= 4 && Mathf.Abs (otherArms.transform.position.x - transform.position.x) <= 4) {
+				movement = false;
+				CatchArms.expanding = true;
+			}
 		}
 	}
 	// 当たり判定
 	void OnTriggerEnter2D(Collider2D other){
 		if (other.gameObject.tag == "Bill" || other.gameObject.tag == "Enemy") {
-			movement = false;
+			//movement = false;
 			// 当たった対象を子関係にする
 			parentObj.GetComponent<CatchArms> ().ParentSetting (other.gameObject);
 		}

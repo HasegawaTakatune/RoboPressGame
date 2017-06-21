@@ -14,6 +14,9 @@ public class CatchArms : MonoBehaviour {
 	private Vector3 mousePos;
 	// ワールド座標
 	private Vector3 worldPos;
+	// 
+	public static bool expanding = false;
+
 	// Use this for initialization
 	void Start () {
 		roboCArms = GetComponentsInChildren<RobotCatchArms> ();
@@ -21,18 +24,6 @@ public class CatchArms : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (!mouseMove) {
-			if (!roboCArms [0].movement && !roboCArms [1].movement) {
-				mouseMove = true;
-			}
-		} else {
-			// マウス座標の取得
-			mousePos = Input.mousePosition;
-			mousePos.z = 10;
-			// ワールド座標に変換
-			worldPos = Camera.main.ScreenToWorldPoint (mousePos);
-			transform.position = worldPos;
-		}
 		// マウスが離されたら
 		if (Input.GetMouseButtonUp (0)) {
 			// ビルショット攻撃

@@ -10,6 +10,7 @@ public class RoboStat: MonoBehaviour{
 	Targetting = 1,
 	Attack = 2,
 	Catch = 3,
-	Delete = 4;
+	MoveToTarget = 4,
+	Delete = 5;
 	public static byte status;
 }

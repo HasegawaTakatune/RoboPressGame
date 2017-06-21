@@ -13,6 +13,9 @@ public class RobotArm : MonoBehaviour {
 	private Vector3 myPos;
 	// 移動量
 	private Vector3 movePos;
+	// ターゲット座標
+	public Vector3 targetPos;
+	public bool onTarget = false;
 	// 当たった敵を格納
 	[SerializeField]
 	private List<GameObject> hitObj = new List<GameObject>();
@@ -36,6 +39,9 @@ public class RobotArm : MonoBehaviour {
 		case RoboStat.Attack:
 			AttackAction ();
 			break;
+		case RoboStat.MoveToTarget:
+			MoveToTargettingPoint ();
+			break;
 		case RoboStat.Delete:
 			DeleteAction ();
 			break;
@@ -46,6 +52,21 @@ public class RobotArm : MonoBehaviour {
 	// ターゲティング処理
 	private void TargettingAction(){
 		transform.rotation = Quaternion.Euler (0, 0, angle.y / 3.14f * 180);
+	}
+	private void MoveToTargettingPoint(){
+		if (Mathf.Abs (targetPos.x - transform.position.x) >= 0.5f && Mathf.Abs (targetPos.y - transform.position.y) >= 0.5f) {
+			angle.x = Mathf.Atan2 (
+				targetPos.x - transform.position.x,
+				targetPos.y - transform.position.y
+			);
+			angle.y = Mathf.Atan2 (
+				targetPos.y - transform.position.y,
+				targetPos.x - transform.position.x
+			);
+			transform.rotation = Quaternion.Euler (0, 0, angle.y / 3.14f * 180);
+			transform.position += new Vector3 (Mathf.Sin (angle.x) * 1, Mathf.Cos (angle.x) * 1, 0);
+		} else
+			onTarget = true;
 	}
 
 	// 攻撃処理
@@ -96,16 +117,18 @@ public class RobotArm : MonoBehaviour {
 	// ヒット判定
 	void OnTriggerEnter2D (Collider2D other)
 	{
-		if (other.gameObject.tag == "Arm") {
-			Touch.RemoveList ();
-			RoboStat.status = RoboStat.Idol;
-			GetComponent<BoxCollider2D> ().enabled = false;
-			RoboStat.status = RoboStat.Delete;
-		} else if (other.gameObject.tag == "Enemy") {
-			other.gameObject.GetComponent<CharacterStatus> ().ToIdol ();
-			hitObj.Add (other.gameObject);
-		} else if (other.gameObject.tag == "MotherShip") {
-			other.gameObject.GetComponent<CharacterStatus> ().ReceiveDamage (10);
+		if (RoboStat.status == RoboStat.Attack) {
+			if (other.gameObject.tag == "Arm") {
+				Touch.RemoveList ();
+				RoboStat.status = RoboStat.Idol;
+				GetComponent<BoxCollider2D> ().enabled = false;
+				RoboStat.status = RoboStat.Delete;
+			} else if (other.gameObject.tag == "Enemy") {
+				other.gameObject.GetComponent<CharacterStatus> ().ToIdol ();
+				hitObj.Add (other.gameObject);
+			} else if (other.gameObject.tag == "MotherShip") {
+				other.gameObject.GetComponent<CharacterStatus> ().ReceiveDamage (10);
+			}
 		}
 	}
 
