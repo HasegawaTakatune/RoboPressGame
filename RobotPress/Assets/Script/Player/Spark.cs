@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Spark : MonoBehaviour {
-
-	[SerializeField]
-	private GameObject parentObj;
-	// スケール
-	private Vector3 scale = Vector3.zero;
+	[SerializeField]GameObject child;
+	bool expanding = true;
 	// キャッチしたオブジェクト
 	private List<CharacterStatus> chara = new List<CharacterStatus>();
 
@@ -18,9 +15,9 @@ public class Spark : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (CatchArms.expanding) {
+		if (expanding) {
 			StartCoroutine (Expanding ());
-			CatchArms.expanding = false;
+			expanding = false;
 		}
 
 		// マウスが離されたら
@@ -34,6 +31,7 @@ public class Spark : MonoBehaviour {
 				}
 			}
 			transform.DetachChildren ();
+			Destroy (child);
 			Destroy (this.gameObject);
 		}
 
@@ -43,20 +41,14 @@ public class Spark : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D other){
 		GameObject obj = other.gameObject;
 		if (obj.tag == "Bill" || obj.tag == "Enemy") {
-			// 当たった対象を子関係にする
-			parentObj.GetComponent<CatchArms> ().ParentSetting (obj);
 			// 当たり判定の準備（物理処理付加）
 			obj.AddComponent<Rigidbody2D> ();
 			obj.GetComponent<Rigidbody2D> ().gravityScale = 0;
-			// 親子関係にする
-			obj.transform.parent = transform;
 			// 
 			CharacterStatus chas = obj.GetComponent<CharacterStatus>();
 			chas.ToIdol ();
 			// 掴んだオブジェクトを保持
 			chara.Add(chas);
-
-
 		}
 	}
 

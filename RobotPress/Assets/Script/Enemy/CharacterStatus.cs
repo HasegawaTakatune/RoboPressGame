@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterStatus : MonoBehaviour {
-	//
-	[SerializeField] private bool ZAKO = true;
+	[SerializeField]GameObject EfExplosion;
 	// ステータス
 	protected const byte Idol = 0,Active = 1,Dead = 2,Shot = 3;
 	protected byte status = Active;
@@ -54,6 +53,7 @@ public class CharacterStatus : MonoBehaviour {
 	// ダメージを受ける
 	public void ReceiveDamage(int dmg){
 		vitality -= dmg;
+		Instantiate (EfExplosion, transform.position, transform.rotation);
 		// 体力がなくなったら
 		if (vitality <= 0) {
 			GameStatus.AddScore (score);
@@ -77,6 +77,7 @@ public class CharacterStatus : MonoBehaviour {
 	private void OnTriggerEnter2D(Collider2D other){
 		if (status == Shot && other.gameObject.tag == "Enemy" || other.gameObject.tag == "MotherShip") {
 			other.gameObject.GetComponent<CharacterStatus> ().ReceiveDamage (damage);
+			Instantiate (EfExplosion, transform.position, transform.rotation);
 		}
 	}
 }
