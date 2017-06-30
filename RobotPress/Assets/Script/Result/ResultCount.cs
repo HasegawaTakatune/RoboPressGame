@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ResultCount : MonoBehaviour {
 
 	private bool isDestroyedCount = true;
 	[SerializeField]private GameObject[] obj;
-	private int NumDestroyed = GameStatus.GetNumberDestroyed ();
 	private int destroyCount = 0;
 	public static float dropTime = 0.5f;
 
@@ -25,6 +25,9 @@ public class ResultCount : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (!isDestroyedCount)
+		if (Input.GetMouseButtonDown (0))
+			SceneManager.LoadScene ("Menu");
 		
 	}
 
@@ -34,7 +37,7 @@ public class ResultCount : MonoBehaviour {
 			if (isScoreCount) {
 				if (count / 100 <= score / 100)	count += 100;
 				else count += 10;
-				ScoreText.text = "Score " + count.ToString ();
+				ScoreText.text = "スコア " + count.ToString ();
 				if (count >= score)
 					isScoreCount = false;
 			} else
@@ -46,11 +49,23 @@ public class ResultCount : MonoBehaviour {
 		while (true) {
 			yield return new WaitForSeconds (0.01f);
 			if (isDestroyedCount) {
-				destroyCount++;
+				//destroyCount++;
 				if ((destroyCount % 10) == 0)
-					dropTime -= 0.01f;
-				Instantiate (obj [0], new Vector3 (Random.Range (-3.0f, 3.0f), 0, 0), Quaternion.identity);
-				if (destroyCount >= NumDestroyed)
+					dropTime -= 0.002f;
+				
+				if (GameStatus.flyEnemyDestroyed > 0) {
+					Instantiate (obj [0], new Vector3 (Random.Range (-3.0f, 3.0f), 0, 0), Quaternion.identity);
+					GameStatus.flyEnemyDestroyed--;
+				} else if (GameStatus.groundEnemyDestroyed > 0) {
+					Instantiate (obj [1], new Vector3 (Random.Range (-3.0f, 3.0f), 0, 0), Quaternion.identity);
+					GameStatus.groundEnemyDestroyed--;
+				} else if (GameStatus.motherShipDestroyed > 0) {
+					Instantiate (obj [2], new Vector3 (Random.Range (-3.0f, 3.0f), 0, 0), Quaternion.identity);
+					GameStatus.motherShipDestroyed--;
+				} else if (GameStatus.bossDestroyed > 0) {
+					Instantiate (obj [3], new Vector3 (Random.Range (-3.0f, 3.0f), 0, 0), Quaternion.identity);
+					GameStatus.bossDestroyed--;
+				} else
 					isDestroyedCount = false;
 			} else
 				break;

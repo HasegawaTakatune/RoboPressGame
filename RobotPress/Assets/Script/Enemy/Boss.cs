@@ -46,7 +46,7 @@ public class Boss : CharacterStatus {
 			}));
 		}
 
-		if (!DoOnce && GameStatus.GetScore () >= 500) {
+		if (!DoOnce) {
 			DoOnce = true;
 			usedSpawn = true;
 			status = Active;
@@ -66,6 +66,7 @@ public class Boss : CharacterStatus {
 
 	protected override void DeadAction ()
 	{
+		GameStatus.bossDestroyed++;
 		gm.ToTheResult ();
 		base.DeadAction ();
 	}

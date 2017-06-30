@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 public class GM : MonoBehaviour {
 
 	private bool toTheResult = false;
+	public GameObject boss;
+	bool doOnce = false;
 
 	// Use this for initialization
 	void Start () {
@@ -19,6 +21,10 @@ public class GM : MonoBehaviour {
 				SceneManager.LoadScene ("Result");
 			}));
 			toTheResult = false;
+		}
+		if (!doOnce && GameStatus.GetScore() >= 300) {
+			boss.SetActive (true);
+			doOnce = true;
 		}
 	}
 	public void ToTheResult(){

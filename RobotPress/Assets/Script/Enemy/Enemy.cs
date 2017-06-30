@@ -25,8 +25,6 @@ public class Enemy : CharacterStatus {
 
 		activAction = Spawn;
 		angle = Random.Range (225, 315);
-
-		//Destroy (gameObject, 20);
 	}
 	
 	// Update is called once per frame
@@ -54,6 +52,7 @@ public class Enemy : CharacterStatus {
 	// 死亡処理
 	protected override void DeadAction ()
 	{
+		GameStatus.flyEnemyDestroyed++;
 		base.DeadAction ();
 	}
 	// 通常行動
@@ -67,12 +66,14 @@ public class Enemy : CharacterStatus {
 				Mathf.Cos ((transform.localEulerAngles.y + angle) * 3.14f / 180) * base.speed,
 				0
 			);
+			if (transform.position.x <= -10)
+				Destroy (this.gameObject);
 		}
 	}
 	// スポーン時の行動
 	private void SpawnAction(){
 		transform.position += new Vector3 (
-			Mathf.Sin ((transform.localEulerAngles.y + angle) * 3.14f / 180) * base.speed,
+			0,//Mathf.Sin ((transform.localEulerAngles.y + angle) * 3.14f / 180) * base.speed,
 			Mathf.Cos ((transform.localEulerAngles.y + angle) * 3.14f / 180) * base.speed,
 			0
 		);

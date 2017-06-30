@@ -62,6 +62,7 @@ public class MotherShip : CharacterStatus {
 	// 死亡処理
 	protected override void DeadAction ()
 	{
+		GameStatus.motherShipDestroyed++;
 		base.DeadAction ();
 	}
 }

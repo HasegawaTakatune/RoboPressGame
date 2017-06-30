@@ -25,10 +25,13 @@ public class EnemyOnTheGround : CharacterStatus {
 		transform.position += new Vector3 (
 			Mathf.Sin ((transform.localEulerAngles.y + 270) * 3.14f / 180) * 0.03f,
 			0, 0);
+		if (transform.position.x <= -10)
+			Destroy (this.gameObject);
 	}
 	// 死亡処理
 	protected override void DeadAction ()
 	{
+		GameStatus.groundEnemyDestroyed++;
 		base.DeadAction ();
 	}
 }

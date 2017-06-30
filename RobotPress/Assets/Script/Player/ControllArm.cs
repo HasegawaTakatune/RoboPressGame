@@ -41,7 +41,7 @@ public class ControllArm : MonoBehaviour {
 		}
 		if (Input.GetMouseButton (0)) {
 			pressTime += Time.deltaTime;
-			if (pressTime >= 0.3f && !press) {
+			if (pressTime >= 0.3f && !press && arms[0].GetStatus() == 0 && arms[1].GetStatus() == 0) {
 				Vector3 musPos = MousePosition ();
 				arms [0].SetTage (musPos + (Vector3.left * 5));
 				arms [0].SetStatus (1);
